@@ -11,10 +11,9 @@
 |
 */
 
-Route::resource('/', 'BlogController');
-Route::get('/generic.html', function () {
-    return view('generic');
-});
-Route::get('/elements.html', function () {
-    return view('elements');
-});
+Route::get('/', 'BlogController@index');
+Route::resource('/article', 'BlogController');
+
+// Route::get('/elements.html', function () {
+//     return view('elements');
+// });

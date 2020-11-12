@@ -18,6 +18,9 @@ class BlogController extends Controller
         $json = Storage::get('public/blog.json');
         $json = json_decode($json, true);
         // return $json;
+        // $last_blog = end($json);
+        // $last_blog = $last_blog['id'];
+        // return ($last_blog);
         return view('index', compact('json'));
     }
 
@@ -50,8 +53,12 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $json = Storage::get('public/blog.json');
+        $json = json_decode($json, true);
+        $blog = $json[$id];
+        return view('content', compact('blog'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
