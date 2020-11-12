@@ -31,7 +31,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -42,7 +42,23 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $file = base_path('storage/app/public/blog.json');
+        $artikel = file_get_contents($file);
+        $data = json_decode($artikel, true);
+        $data[] = array(
+            'id' => $request->input('id'),
+            'title' => $request->input('title'),
+            'author' => $request->input('author'),
+            'image' => $request->input('image'),
+            'content' => $request->input('content'),
+            'created' => $request->input('created'),
+            'editor' => $request->input('editor'),
+            'edited' => $request->input('edited'),
+        );
+
+        $jsonFile = json_encode($data, JSON_PRETTY_PRINT);
+        $artikel = file_put_contents($file, $jsonFile);
+        return redirect()->route('index');
     }
 
     /**
@@ -68,7 +84,10 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+        $json = Storage::get('public/blog.json');
+        $json = json_decode($json, true);
+        $blog = $json[$id];
+        return view('editor', compact('blog'));
     }
 
     /**
@@ -91,6 +110,14 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $json = Storage::get('public/blog.json');
+        $json = json_decode($json, true);
+
+        array_splice($json, $id, 1);
+
+        $jsonFile = json_encode($json, JSON_PRETTY_PRINT);
+        $getJson = file_put_contents($file, $jsonFile);
+
+        return redirect()->route('index')->with(['artikel' => $artikel]);
     }
 }
