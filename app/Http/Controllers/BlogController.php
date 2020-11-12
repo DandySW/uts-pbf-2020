@@ -68,7 +68,10 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+        $json = Storage::get('public/blog.json');
+        $json = json_decode($json, true);
+        $blog = $json[$id];
+        return view('editor', compact('blog'));
     }
 
     /**

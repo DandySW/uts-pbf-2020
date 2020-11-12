@@ -27,7 +27,7 @@
     <!-- Featured Post -->
     <article class="post featured">
         <header class="major">
-            <span class="date">{{$json['0']['created']}}</span>
+            <span class="date">{{$json['0']['created']}}<br>Ditulis oleh: {{$json[0]['author']}} | Diedit oleh: {{$json[0]['editor']}}</span>
             <h2><a href="#">{{$json['0']['title']}}</a></h2>
             <p>{!! ReadMoreSpace($json['0']['content'], 500)!!}</p>
         </header>
@@ -42,7 +42,7 @@
         @if($blog['id']>0)
         <article class="post featured">
             <header class="major">
-                <span class="date">{{$blog['created']}}</span>
+                <span class="date">{{$blog['created']}}<br>Ditulis oleh: {{$blog['author']}} | Diedit oleh: {{$blog['editor']}}</span>
                 <h2><a href="#">{{$blog['title']}}</a></h2>
                 <p>{!! ReadMoreSpace($blog['content'], 500)!!}</p>
             </header>
