@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::resource('/', 'BlogController');
+Route::get('/generic.html', function () {
+    return view('generic');
+});
+Route::get('/elements.html', function () {
+    return view('elements');
 });
