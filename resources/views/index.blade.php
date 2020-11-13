@@ -40,7 +40,6 @@
     <!-- Posts -->
     <section class="posts">
         @foreach($json as $blog)
-        @if($blog['id']>0)
         <article class="post featured">
             <header class="major">
                 <span class="date">{{$blog['created']}}<br>Ditulis oleh: {{$blog['author']}} | Diedit oleh: {{$blog['editor']}}</span>
@@ -49,10 +48,10 @@
             </header>
             <a href="#" class="image main"><img src="{{$blog['image']}}" alt="" /></a>
             <ul class="actions special">
-                <li><a href="#" class="button large">Readmore</a></li>
+                <li><a href="{{url('article/'.$blog['id'])}}" class="button large">Readmore</a></li>
+                <li><a href="{{route('article.destroy/'.$blog['id'])}}" class="button large">Delete</a></li>
             </ul>
         </article>
-        @endif
         @endforeach
     </section>
     @endsection

@@ -17,10 +17,6 @@ class BlogController extends Controller
     {
         $json = Storage::get('public/blog.json');
         $json = json_decode($json, true);
-        // return $json;
-        // $last_blog = end($json);
-        // $last_blog = $last_blog['id'];
-        // return ($last_blog);
         return view('index', compact('json'));
     }
 
@@ -31,7 +27,11 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $json = Storage::get('public/blog.json');
+        $json = json_decode($json, true);
+        $last_blog = end($json);
+        $last_blog = $last_blog['id'];
+        return view('create', compact('last_blog'));
     }
 
     /**
@@ -58,7 +58,7 @@ class BlogController extends Controller
 
         $jsonFile = json_encode($data, JSON_PRETTY_PRINT);
         $artikel = file_put_contents($file, $jsonFile);
-        return redirect()->route('index');
+        return redirect()->route('article.index');
     }
 
     /**
@@ -110,12 +110,13 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        $json = Storage::get('public/blog.json');
-        $json = json_decode($json, true);
+        $file = base_path('storage/app/public/blog.json');
+        $getJson = file_get_contents($file);
+        $artikel = json_decode($getJson, true);
 
-        array_splice($json, $id, 1);
+        array_splice($artikel, $id, 1);
 
-        $jsonFile = json_encode($json, JSON_PRETTY_PRINT);
+        $jsonFile = json_encode($artikel, JSON_PRETTY_PRINT);
         $getJson = file_put_contents($file, $jsonFile);
 
         return redirect()->route('index')->with(['artikel' => $artikel]);

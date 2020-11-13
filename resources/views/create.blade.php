@@ -25,6 +25,7 @@
 				@csrf
 				<input type="hidden" name="created" value="{{date('j F Y')}}">
 				<input type="hidden" name="edited" value="-">
+				<input type="hidden" name="id" value="{{$last_blog+1}}">
 				<div class="col-12">
 					Judul Artikel
 					<input type="text" name="title" id="title" value="" placeholder="Judul Artikel" required />
@@ -43,8 +44,8 @@
 				</div> -->
 				<!-- <div class="col-6 col-12-xsmall">
 					<input type="file" name="upload" id="satu" accept="image/*" disabled /> </div> -->
-				<div class="col-6 col-12-xsmall">
-					<input type="text" name="image" id="image" value="" placeholder="Link Gambar" disabled />
+				<div class="col-12">
+					<input type="text" name="image" id="image" value="" placeholder="Link Gambar" required />
 				</div>
 				<!-- Break -->
 				<div class="col-12">
