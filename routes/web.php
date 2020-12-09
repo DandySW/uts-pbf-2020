@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/', 'BlogController@index');
-Route::resource('/article', 'BlogController');
+Route::get('/', 'ArticleController@index');
+Route::resource('/article', 'ArticleController');
+// Route::get('/article/{slug}', 'ArticleController@show');
 
 // Route::get('/elements.html', function () {
 //     return view('elements');

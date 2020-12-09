@@ -1,7 +1,7 @@
 @extends('header-footer')
 
 @section('title')
-{{$blog['title']}}
+{{$article['title']}}
 @endsection
 
 @section('active')
@@ -19,11 +19,12 @@
     <!-- Post -->
     <section class="post">
         <header class="major">
-            <span class="date">{{$blog['created']}} <br>Ditulis oleh: {{$blog['author']}} | Diedit oleh: {{$blog['editor']}}</span>
-            <h1>{{$blog['title']}}</h1>
+            <span class="date">{{$article['created']}} <br>Ditulis oleh: {{$article['author']}} | Diedit oleh:
+                {{$article['editor']}}</span>
+            <h1>{{$article['title']}}</h1>
         </header>
-        <div class="image main"><img src="{{$blog['image']}}" alt="" /></div>
-        <p>{!!$blog['content']!!}</p>
+        <div class="image main"><img src="{{ url($article['image']) }}" alt="" /></div>
+        <p>{!!$article['content']!!}</p>
     </section>
 
 </div>

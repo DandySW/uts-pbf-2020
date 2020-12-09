@@ -32,9 +32,12 @@
         <nav id="nav">
             @yield('active')
             <ul class="icons">
-                <li><a href="http://wa.me/6282234795673" class="icon brands fa-whatsapp"><span class="label">Whatspp</span></a></li>
-                <li><a href="http://instagram.com/dandysatriow" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="https://github.com/DandySW" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                <li><a href="http://wa.me/6282234795673" class="icon brands fa-whatsapp"><span
+                            class="label">Whatspp</span></a></li>
+                <li><a href="http://instagram.com/dandysatriow" class="icon brands fa-instagram"><span
+                            class="label">Instagram</span></a></li>
+                <li><a href="https://github.com/DandySW" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
             </ul>
         </nav>
 
@@ -46,7 +49,8 @@
         <!-- Copyright -->
         <div id="copyright">
             <ul>
-                <li>SI C PBF 2020 - <a href="http://sic.pbf.ilkom.unej.ac.id/182410101001/uts/public">182410101001</a></li>
+                <li>SI C PBF 2020 - <a href="http://sic.pbf.ilkom.unej.ac.id/182410101001/uts/public">182410101001</a>
+                </li>
                 <li>Template: <a href="https://html5up.net">HTML5 UP</a></li>
             </ul>
         </div>

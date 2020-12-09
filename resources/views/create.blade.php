@@ -4,10 +4,10 @@
 
 @section('active')
 <ul class="links">
-	<li><a>List Article</a></li>
-	<li class="active"><a href="{{url('article/create')}}"> Create Article</a></li>
-	<li><a>Content Article</a></li>
-	<li><a>Editor</a></li>
+	<li><a href="{{url('/')}}">List Article</a></li>
+	<li class="active"><a>Create Article</a></li>
+	<li><a>Read Article</a></li>
+	<li><a>Edit Article</a></li>
 </ul>
 @endsection
 
@@ -17,26 +17,32 @@
 
 	<!-- Post -->
 	<section class="post">
+
 		<!-- Form -->
 		<h2>Buat Artikelmu Sendiri</h2>
-
-		<form method="post" action="{{route('article.store')}}" onsubmit="">
+		<form method="post" action="{{route('article.store')}}" enctype="multipart/form-data">
 			<div class="row gtr-uniform">
 				@csrf
-				<input type="hidden" name="created" value="{{date('j F Y')}}">
+				{{-- <input type="hidden" name="created" value="{{date('j F Y')}}">
 				<input type="hidden" name="edited" value="-">
-				<input type="hidden" name="id" value="{{$last_blog+1}}">
+				<input type="hidden" name="id" value={{$last_article+1}}> --}}
 				<div class="col-12">
 					Judul Artikel
-					<input type="text" name="title" id="title" value="" placeholder="Judul Artikel" required />
+					<input type="text" name="title" id="title" placeholder="Judul Artikel" />
+					@error('title')
+					<label for="title">{{ $message }}</label>
+					@enderror
 				</div>
 				<div class="col-6 col-12-xsmall">
-					Nama Penulis
-					<input type="text" name="author" id="author" value="" placeholder="Nama Penulis" required />
+					Penulis
+					<input type="text" name="author" id="author" value="" placeholder="Penulis" />
+					@error('author')
+					<label for="author">{{ $message }}</label>
+					@enderror
 				</div>
 				<div class="col-6 col-12-xsmall">
-					Nama Penyunting
-					<input type="text" name="editor" id="editor" value="-" placeholder="Nama Editor" readonly />
+					Penyunting
+					<input type="text" id="editor" value="-" disabled />
 				</div>
 				<!-- <div class="col-12">
 					<input type="button" onclick="upload()" value="Upload Gambar">
@@ -45,11 +51,19 @@
 				<!-- <div class="col-6 col-12-xsmall">
 					<input type="file" name="upload" id="satu" accept="image/*" disabled /> </div> -->
 				<div class="col-12">
-					<input type="text" name="image" id="image" value="" placeholder="Link Gambar" required />
+					Gambar Artikel:
+					<input type="file" name="image" id="image" placeholder="Link Gambar" accept='image/*' />
+					@error('image')
+					<label for="image">{{ $message }}</label>
+					@enderror
 				</div>
 				<!-- Break -->
 				<div class="col-12">
+					Isi Artikel
 					<textarea name="content" id="content" placeholder="Enter your message" rows="6"></textarea>
+					@error('content')
+					<label for="content">{{ $message }}</label>
+					@enderror
 				</div>
 				<!-- Break -->
 				<div class="col-12">
@@ -61,6 +75,7 @@
 			</div>
 		</form>
 	</section>
+
 </div>
 @endsection
 
