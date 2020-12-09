@@ -28,10 +28,6 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        // $getjson = Storage::get('public/article.json');
-        // $json = json_decode($getjson, true);
-        // $last_article = end($json);
-        // $last_article = $last_article['id'];
         return view('create');
     }
 
@@ -47,9 +43,7 @@ class ArticleController extends Controller
         $json = json_decode($getjson, true);
         $last_id = end($json);
         $id = $last_id['id'] + 1;
-        // $file = base_path('storage/app/public/article.json');
-        // $artikel = file_get_contents($file);
-        // $data = json_decode($artikel, true);
+
         $request->validate(
             [
                 'title' => 'required',
@@ -82,10 +76,9 @@ class ArticleController extends Controller
             'content' => $request->content,
             'created' => date('j F Y'),
             'editor' => "-",
-            'edited' => "-",
+            'edited' => "",
         );
         $image->storeAs('public/uploads', $imagename);
-        // return $imagepath;
 
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
