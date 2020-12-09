@@ -54,19 +54,22 @@ class ArticleController extends Controller
             [
                 'title' => 'required',
                 'author' => 'required',
-                'image' => 'required',
-                'content' => 'required',
+                'image' => 'required|max:5000',
+                'content' => 'required|min:10',
             ],
             [
                 'title.required' => 'Kolom "judul artikel" harus diisi',
                 'author.required' => 'Kolom "penulis" Harus diisi',
                 'image.required' => 'Harus ada gambar yang diupload',
+                'image.max' => 'Ukuran gambar maksimal 5,0 MB',
                 'content.required' => 'Kolom "isi artikel" Harus diisi',
+                'content.min' => 'Isi konten minimal 10 karakter',
             ]
         );
+
         $image = $request->file('image');
         $extension = $image->getClientOriginalExtension();
-        $slug = Str::slug($request->title);
+        $slug = Str::slug($request->title) . '-' . $id;
         $imagename = 'artikel-' . $id . '_' . $slug . '.' . strtolower($extension);
         $imagepath = 'storage/uploads/' . $imagename;
 
