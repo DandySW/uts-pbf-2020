@@ -53,10 +53,17 @@
         @if ($article['id'] != 0)
         <article class="post featured">
             <header class="major">
-                <span class="date">{{$article['created']}}<br>Ditulis oleh: {{$article['author']}} | Diedit oleh:
+                <<<<<<< HEAD <span class="date">{{$article['created']}}<br>Ditulis oleh: {{$article['author']}} | Diedit
+                    oleh:
                     {{$article['editor']}}</span>
-                <h2><a href="{{url('article/'.$article['slug'])}}">{{$article['title']}}</a></h2>
-                <p>{!! ReadMoreSpace($article['content'], 500)!!}</p>
+                    <h2><a href="{{url('article/'.$article['slug'])}}">{{$article['title']}}</a></h2>
+                    <p>{!! ReadMoreSpace($article['content'], 500)!!}</p>
+                    =======
+                    <span class="date">{{$blog['created']}}<br>Ditulis oleh: {{$blog['author']}} | Diedit oleh:
+                        {{$blog['editor']}}</span>
+                    <h2><a href="#">{{$blog['title']}}</a></h2>
+                    <p>{!! ReadMoreSpace($blog['content'], 500)!!}</p>
+                    >>>>>>> 66fd23ef30851c49c7100aea8e9d69f4d863ced7
             </header>
             <a href="{{url($article['image'])}}" class="image main"><img src="{{url($article['image'])}}"
                     alt="{{url($article['image'])}}" /></a>
