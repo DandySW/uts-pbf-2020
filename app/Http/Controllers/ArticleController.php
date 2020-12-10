@@ -16,8 +16,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        // Get JSON file 
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
+
         return view('index', compact('json'));
     }
 
@@ -39,6 +41,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        // Get JSON file and article's last id 
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
         $last_id = end($json);
@@ -57,10 +60,11 @@ class ArticleController extends Controller
                 'image.required' => 'Harus ada gambar yang diupload',
                 'image.max' => 'Ukuran gambar maksimal 5,0 MB',
                 'content.required' => 'Kolom "isi artikel" Harus diisi',
-                'content.min' => 'Isi konten minimal 10 karakter',
+                'content.min' => 'Isi artikel minimal 10 karakter',
             ]
         );
 
+        // Make new name for image (use slug title) with original extension
         $image = $request->file('image');
         $extension = $image->getClientOriginalExtension();
         $slug = Str::slug($request->title) . '-' . $id;
@@ -69,8 +73,8 @@ class ArticleController extends Controller
 
         $json[] = array(
             'id' => $id,
-            'slug' => $slug,
             'title' => $request->title,
+            'slug' => $slug,
             'author' => $request->author,
             'image' => $imagepath,
             'content' => $request->content,
@@ -80,8 +84,10 @@ class ArticleController extends Controller
         );
         $image->storeAs('public/uploads', $imagename);
 
+        // Save to JSON
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
+
         return redirect(url('/article', $slug));
     }
 
@@ -93,13 +99,17 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
+        // Get JSON file
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
 
+        // Search ID from last article
         $last_id = end($json);
-        for ($id = 0; $id < $last_id; $id++) {
-            $article = $json[$id];
-            $article_slug = $article['slug'];
+        $last_id = $last_id['id'];
+
+        // Search with looping the full data of article that has slug value
+        for ($id = 0; $id <= $last_id; $id++) {
+            $article_slug = $json[$id]['slug'];
             if ($article_slug == $slug) {
                 return view('show', compact('article'));
             }
@@ -112,12 +122,20 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
-        $article = $json[$id];
-        return view('editor', compact('article'));
+
+        $last_id = end($json);
+        $last_id = $last_id['id'];
+        for ($id = 0; $id <= $last_id; $id++) {
+            $article = $json[$id];
+            $article_slug = $article['slug'];
+            if ($article_slug == $slug) {
+                return view('edit', compact('article'));
+            }
+        }
     }
 
     /**
@@ -140,11 +158,19 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $getjson = Storage::get('public/article.json');
-        $json = json_decode($getjson, true);
-        // $file = base_path('storage/app/public/article.json');
-        // $getJson = file_get_contents($file);
-        // $artikel = json_decode($getJson, true);
+        // Get JSON file
+        $json = Storage::get('public/article.json');
+        $json = json_decode($json, true);
+
+        // $last_id = end($json);
+        // $last_id = $last_id['id'];
+        // for ($id = 0; $id <= $last_id; $id++) {
+        //     $article = $json[$id];
+        //     $article_slug = $article['slug'];
+        //     if ($article_slug == $slug) {
+        //         return $json[$id];
+        //     }
+        // }
 
         array_splice($json, $id, 1);
 

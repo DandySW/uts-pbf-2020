@@ -20,39 +20,30 @@
 
 		<!-- Form -->
 		<h2>Buat Artikelmu Sendiri</h2>
-		<form method="post" action="{{route('article.store')}}" enctype="multipart/form-data">
+		<form method="POST" action="{{route('article.store')}}" enctype="multipart/form-data">
 			<div class="row gtr-uniform">
 				@csrf
-				{{-- <input type="hidden" name="created" value="{{date('j F Y')}}">
-				<input type="hidden" name="edited" value="-">
-				<input type="hidden" name="id" value={{$last_article+1}}> --}}
 				<div class="col-12">
 					Judul Artikel
-					<input type="text" name="title" id="title" placeholder="Judul Artikel" />
+					<input type="text" name="title" id="title" placeholder="Judul Artikel" value="{{ old('title') }}" />
 					@error('title')
 					<label for="title">{{ $message }}</label>
 					@enderror
 				</div>
 				<div class="col-6 col-12-xsmall">
 					Penulis
-					<input type="text" name="author" id="author" value="" placeholder="Penulis" />
+					<input type="text" name="author" id="author" placeholder="Penulis" value="{{ old('author') }}" />
 					@error('author')
-					<label for="author">{{ $message }}</label>
+					<label for=" title">{{ $message }}</label>
 					@enderror
 				</div>
 				<div class="col-6 col-12-xsmall">
 					Penyunting
 					<input type="text" id="editor" value="-" disabled />
 				</div>
-				<!-- <div class="col-12">
-					<input type="button" onclick="upload()" value="Upload Gambar">
-					<input type="button" onclick="link()" value="Melalui Link">
-				</div> -->
-				<!-- <div class="col-6 col-12-xsmall">
-					<input type="file" name="upload" id="satu" accept="image/*" disabled /> </div> -->
 				<div class="col-12">
 					Gambar Artikel:
-					<input type="file" name="image" id="image" placeholder="Link Gambar" accept='image/*' />
+					<input type="file" name="image" id="image" accept='image/*' />
 					@error('image')
 					<label for="image">{{ $message }}</label>
 					@enderror
@@ -60,7 +51,8 @@
 				<!-- Break -->
 				<div class="col-12">
 					Isi Artikel
-					<textarea name="content" id="content" placeholder="Enter your message" rows="6"></textarea>
+					<textarea name="content" id="content" placeholder="Isi Artikel"
+						rows="6"> {{ old('content') }} </textarea>
 					@error('content')
 					<label for="content">{{ $message }}</label>
 					@enderror

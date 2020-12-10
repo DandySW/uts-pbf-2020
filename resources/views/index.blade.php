@@ -18,7 +18,7 @@
 @section('active')
 <ul class="links">
     <li class="active"><a>List Article</a></li>
-    <li><a href="{{url('article/create')}}"> Create Article</a></li>
+    <li><a href="{{route('article.create')}}"> Create Article</a></li>
     <li><a>Read Article</a></li>
     <li><a>Edit Article</a></li>
 </ul>
@@ -42,7 +42,7 @@
         </header>
         <a href="#" class="image main"><img src="{{url($json[0]['image'])}}" alt="{{url($json[0]['image'])}}" /></a>
         <ul class="actions special">
-            <li><a href="{{url('article/'.$json[0]['slug'])}}" class="button large">Readmore</a></li>
+            <li><a href="{{route('article.show', $json[0]['slug'])}}" class="button primary large">Readmore</a></li>
         </ul>
     </article>
     @endif
@@ -56,14 +56,20 @@
                 <span class="date">{{$article['created']}}<br>Ditulis oleh: {{$article['author']}} | Diedit
                     oleh:
                     {{$article['editor']}}</span>
-                <h2><a href="{{url('article/'.$article['slug'])}}">{{$article['title']}}</a></h2>
+                <h2><a href="{{route('article.show', $article['slug'])}}">{{$article['title']}}</a></h2>
                 <p>{!! ReadMoreSpace($article['content'], 500)!!}</p>
             </header>
             <a href="{{url($article['image'])}}" class="image main"><img src="{{url($article['image'])}}"
                     alt="{{url($article['image'])}}" /></a>
             <ul class="actions special">
-                <li><a href="{{url('article',$article['slug'])}}" class="button large">Readmore</a></li>
-                {{-- <li><a href="{{route('article.destroy')}}" class="button large">Delete</a></li> --}}
+                <li><a href="{{route('article.show', $article['slug'])}}" class="button primary large">Readmore</a>
+                </li>
+                <li><a href="#" class="button large">Edit</a></li>
+                <form action="{{ route('article.destroy', $article['slug']) }}" method="POST">
+                    @method('delete')
+                    @csrf
+                    <li><a><button class="button large">Delete</button></a></li>
+                </form>
             </ul>
         </article>
         @endif

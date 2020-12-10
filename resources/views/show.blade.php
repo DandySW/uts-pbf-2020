@@ -7,10 +7,12 @@
 @section('active')
 <ul class="links">
     <li><a href="{{url('/')}}">List Article</a></li>
-    <li class="active"><a>Content Article</a></li>
-    <li><a href="{{url('/edit')}}">Editor</a></li>
+    <li><a href="{{route('article.create')}}"> Create Article</a></li>
+    <li class="active"><a>Read Article</a></li>
+    <li><a href="{{route('article.edit', $article['slug'])}}">Edit Article</a></li>
 </ul>
 @endsection
+
 
 @section('content')
 <!-- Main -->
