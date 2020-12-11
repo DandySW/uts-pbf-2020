@@ -44,8 +44,6 @@ class ArticleController extends Controller
         // Get JSON file and article's last id 
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
-        $last_id = end($json);
-        $id = $last_id['id'] + 1;
 
         $request->validate(
             [
@@ -67,22 +65,24 @@ class ArticleController extends Controller
         // Make new name for image (use slug title) with original extension
         $image = $request->file('image');
         $extension = $image->getClientOriginalExtension();
-        $slug = Str::slug($request->title) . '-' . $id;
-        $imagename = 'artikel-' . $id . '_' . $slug . '.' . strtolower($extension);
-        $imagepath = 'storage/uploads/' . $imagename;
+        $slug = Str::slug($request->title) . '-' . Str::slug(date('dmy H:i:s'));
+        $imagename = $slug . '.' . strtolower($extension);
+        $imagepath = 'uploads/' . $imagename;
+
+        //  Save Image to Storage use StoreAs
+        $image->storeAs('public/uploads', $imagename);
 
         $json[] = array(
-            'id' => $id,
+            'status' => 1,
             'title' => $request->title,
             'slug' => $slug,
             'author' => $request->author,
             'image' => $imagepath,
             'content' => $request->content,
-            'created' => date('j F Y'),
+            'created' => date('j F Y H:i:s'),
             'editor' => "-",
             'edited' => "",
         );
-        $image->storeAs('public/uploads', $imagename);
 
         // Save to JSON
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
@@ -103,17 +103,17 @@ class ArticleController extends Controller
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
 
-        // Search ID from last article
-        $last_id = end($json);
-        $last_id = $last_id['id'];
-
         // Search with looping the full data of article that has slug value
-        for ($id = 0; $id <= $last_id; $id++) {
-            $article_slug = $json[$id]['slug'];
+        $count = count($json);
+        for ($id = 0; $id < $count; $id++) {
+            $article = $json[$id];
+            $article_slug = $article['slug'];
             if ($article_slug == $slug) {
                 return view('show', compact('article'));
             }
         }
+
+        return redirect('/');
     }
 
     /**
@@ -124,18 +124,21 @@ class ArticleController extends Controller
      */
     public function edit($slug)
     {
+        // Get JSON file
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
 
-        $last_id = end($json);
-        $last_id = $last_id['id'];
-        for ($id = 0; $id <= $last_id; $id++) {
+        // Search with looping the full data of article that has slug value
+        $count = count($json);
+        for ($id = 0; $id < $count; $id++) {
             $article = $json[$id];
             $article_slug = $article['slug'];
             if ($article_slug == $slug) {
-                return view('edit', compact('article'));
+                return view('edit', compact('article', 'id'));
             }
         }
+
+        return redirect('/');
     }
 
     /**
@@ -145,9 +148,66 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // Get JSON file and article's last id 
+        $getjson = Storage::get('public/article.json');
+        $json = json_decode($getjson, true);
+
+        $request->validate(
+            [
+                'title' => 'required',
+                'editor' => 'required',
+                'image' => 'max:5000',
+                'content' => 'required|min:10',
+            ],
+            [
+                'title.required' => 'Kolom "judul artikel" harus diisi',
+                'editor.required' => 'Kolom "penyunting" Harus diisi',
+                'image.max' => 'Ukuran gambar maksimal 5,0 MB',
+                'content.required' => 'Kolom "isi artikel" Harus diisi',
+                'content.min' => 'Isi artikel minimal 10 karakter',
+            ]
+        );
+
+        $slug = Str::slug($request->title) . '-' . Str::slug(date('dmy H:i:s'));
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $imagename = $slug . '.' . strtolower($extension);
+            $imagepath = 'uploads/' . $imagename;
+
+            //  Save Image to Storage use StoreAs and delete Old Image
+            Storage::delete('public/' . $request->old_image);
+            $image->storeAs('public/uploads', $imagename);
+        } else {
+            $image = pathinfo($request->old_image);
+            $extension = $image['extension'];
+
+            $imagename = $slug . '.' . $extension;
+            $imagepath = 'uploads/' . $imagename;
+
+            Storage::move('public/' . $request->old_image, 'public/' . $imagepath);
+        };
+
+        $json[$request->id] = array(
+            'status' => 1,
+            'title' => $request->title,
+            'slug' => $slug,
+            'author' => $json[$request->id]['author'],
+            'image' => $imagepath,
+            'content' => $request->content,
+            'created' => $json[$request->id]['created'],
+            'editor' => $request->editor,
+            'edited' => date('j F Y H:i:s'),
+        );
+
+        // Save to JSON
+        $savejson = json_encode($json, JSON_PRETTY_PRINT);
+        Storage::put('public/article.json', $savejson);
+
+        return redirect(url('/article', $slug));
     }
 
     /**
@@ -156,28 +216,25 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        // Get JSON file
-        $json = Storage::get('public/article.json');
-        $json = json_decode($json, true);
+        // Get JSON file 
+        $getjson = Storage::get('public/article.json');
+        $json = json_decode($getjson, true);
 
-        // $last_id = end($json);
-        // $last_id = $last_id['id'];
-        // for ($id = 0; $id <= $last_id; $id++) {
-        //     $article = $json[$id];
-        //     $article_slug = $article['slug'];
-        //     if ($article_slug == $slug) {
-        //         return $json[$id];
-        //     }
-        // }
-
-        array_splice($json, $id, 1);
+        $count = count($json);
+        for ($id = 0; $id < $count; $id++) {
+            $article = $json[$id];
+            $article_slug = $article['slug'];
+            if ($article_slug == $slug) {
+                Storage::delete('public/' . $json[$id]['image']);
+                unset($json[$id]);
+                break;
+            }
+        }
 
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
-
         return redirect('/');
-        // return redirect()->route('index')->with(['artikel' => $artikel]);
     }
 }

@@ -26,8 +26,6 @@
 
 
 @section('content')
-
-
 <!-- Main -->
 <div id="main">
 
@@ -40,17 +38,17 @@
             <h2><a href="{{url('article/'.$json[0]['slug'])}}">{{$json[0]['title']}}</a></h2>
             <p>{!! ReadMoreSpace($json[0]['content'], 500)!!}</p>
         </header>
-        <a href="#" class="image main"><img src="{{url($json[0]['image'])}}" alt="{{url($json[0]['image'])}}" /></a>
+        <a href="{{url('storage/'.$json[0]['image'])}}" class="image main" target="_blank"><img
+                src="{{url('storage/'.$json[0]['image'])}}" alt="{{url('storage/'.$json[0]['image'])}}" /></a>
         <ul class="actions special">
             <li><a href="{{route('article.show', $json[0]['slug'])}}" class="button primary large">Readmore</a></li>
         </ul>
     </article>
-    @endif
 
     <!-- Posts -->
     <section class="posts">
         @foreach($json as $article)
-        @if ($article['id'] != 0)
+        @if ($article['status']==1)
         <article class="post featured">
             <header class="major">
                 <span class="date">{{$article['created']}}<br>Ditulis oleh: {{$article['author']}} | Diedit
@@ -59,12 +57,12 @@
                 <h2><a href="{{route('article.show', $article['slug'])}}">{{$article['title']}}</a></h2>
                 <p>{!! ReadMoreSpace($article['content'], 500)!!}</p>
             </header>
-            <a href="{{url($article['image'])}}" class="image main"><img src="{{url($article['image'])}}"
-                    alt="{{url($article['image'])}}" /></a>
+            <a href="{{url('storage/'.$article['image'])}}" class="image main" target="_blank"><img
+                    src="{{url('storage/'.$article['image'])}}" alt="{{url('storage/'.$article['image'])}}" /></a>
             <ul class="actions special">
                 <li><a href="{{route('article.show', $article['slug'])}}" class="button primary large">Readmore</a>
                 </li>
-                <li><a href="#" class="button large">Edit</a></li>
+                <li><a href="{{ route('article.edit', $article['slug'])}}" class="button large">Edit</a></li>
                 <form action="{{ route('article.destroy', $article['slug']) }}" method="POST">
                     @method('delete')
                     @csrf
@@ -75,21 +73,11 @@
         @endif
         @endforeach
     </section>
+    @endif
     @endsection
 
     @section('footer')
     <footer>
-        {{-- <div class="pagination">
-                <!--<a href="#" class="previous">Prev</a>-->
-                <a href="#" class="page active">1</a>
-                <a href="#" class="page">2</a>
-                <a href="#" class="page">3</a>
-                <span class="extra">&hellip;</span>
-                <a href="#" class="page">8</a>
-            <a href="#" class="page">9</a>
-            <a href="#" class="page">10</a>
-            <a href="#" class="next">Next</a>
-        </div> --}}
     </footer>
 </div>
 

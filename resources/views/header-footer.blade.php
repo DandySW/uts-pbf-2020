@@ -65,6 +65,10 @@
     <script src="{{asset('/assets/js/breakpoints.min.js')}}"></script>
     <script src="{{asset('/assets/js/util.js')}}"></script>
     <script src="{{asset('/assets/js/main.js')}}"></script>
+    <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        CKEDITOR.replace('content')
+    </script>
 
 </body>
 

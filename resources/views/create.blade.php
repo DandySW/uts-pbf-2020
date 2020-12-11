@@ -34,7 +34,7 @@
 					Penulis
 					<input type="text" name="author" id="author" placeholder="Penulis" value="{{ old('author') }}" />
 					@error('author')
-					<label for=" title">{{ $message }}</label>
+					<label for=" author">{{ $message }}</label>
 					@enderror
 				</div>
 				<div class="col-6 col-12-xsmall">
@@ -48,7 +48,6 @@
 					<label for="image">{{ $message }}</label>
 					@enderror
 				</div>
-				<!-- Break -->
 				<div class="col-12">
 					Isi Artikel
 					<textarea name="content" id="content" placeholder="Isi Artikel"
@@ -57,10 +56,10 @@
 					<label for="content">{{ $message }}</label>
 					@enderror
 				</div>
-				<!-- Break -->
+
 				<div class="col-12">
 					<ul class="actions">
-						<li><input type="submit" value="Send Message" class="primary" /></li>
+						<li><input type="submit" value="Tambah Artikel" class="primary" /></li>
 						<li><input type="reset" value="Reset" /></li>
 					</ul>
 				</div>
@@ -70,16 +69,3 @@
 
 </div>
 @endsection
-
-<!-- Option Function -->
-<!-- <script>
-	function upload() {
-		document.getElementById("satu").disabled = false;
-		document.getElementById("dua").disabled = true;
-	}
-
-	function link() {
-		document.getElementById("satu").disabled = true;
-		document.getElementById("link").disabled = false;
-	}
-</script> -->
