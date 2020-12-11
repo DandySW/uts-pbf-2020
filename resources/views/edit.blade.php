@@ -1,6 +1,8 @@
 @extends('header-footer')
 
-@section('title', 'Buat Artikel Baru')
+@section('title')
+Edit | {{ $article['title'] }}
+@endsection
 
 @section('active')
 <ul class="links">

@@ -80,8 +80,8 @@
     <footer>
     </footer>
 </div>
-
 @endsection
+
 <!-- Read More Function -->
 <?php
 function ReadMoreSpace($input, $length)

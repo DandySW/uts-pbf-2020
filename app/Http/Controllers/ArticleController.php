@@ -16,7 +16,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        // Get JSON file 
+        // Mendapatkan file JSON dari Storage
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
 
@@ -41,7 +41,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // Get JSON file and article's last id 
+        // Mendapatkan file JSON dari Storage
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
 
@@ -62,14 +62,14 @@ class ArticleController extends Controller
             ]
         );
 
-        // Make new name for image (use slug title) with original extension
+        // Membuat nama baru untuk gambar menggunakan slug judul dan tanggal
         $image = $request->file('image');
         $extension = $image->getClientOriginalExtension();
         $slug = Str::slug($request->title) . '-' . Str::slug(date('dmy H:i:s'));
         $imagename = $slug . '.' . strtolower($extension);
         $imagepath = 'uploads/' . $imagename;
 
-        //  Save Image to Storage use StoreAs
+        //  Menyimpan gambar menggunakan store as
         $image->storeAs('public/uploads', $imagename);
 
         $json[] = array(
@@ -79,12 +79,12 @@ class ArticleController extends Controller
             'author' => $request->author,
             'image' => $imagepath,
             'content' => $request->content,
-            'created' => date('j F Y H:i:s'),
+            'created' => date('j F Y H:i'),
             'editor' => "-",
             'edited' => "",
         );
 
-        // Save to JSON
+        // Menyimpan ke dalam JSON
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
 
@@ -99,11 +99,11 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-        // Get JSON file
+        // Mendapatkan file JSON dari Storage
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
 
-        // Search with looping the full data of article that has slug value
+        // Cari artikel yang memiliki slug tersebut
         $count = count($json);
         for ($id = 0; $id < $count; $id++) {
             $article = $json[$id];
@@ -112,7 +112,6 @@ class ArticleController extends Controller
                 return view('show', compact('article'));
             }
         }
-
         return redirect('/');
     }
 
@@ -124,21 +123,24 @@ class ArticleController extends Controller
      */
     public function edit($slug)
     {
-        // Get JSON file
+        // Mendapatkan file JSON dari Storage
         $json = Storage::get('public/article.json');
         $json = json_decode($json, true);
 
-        // Search with looping the full data of article that has slug value
-        $count = count($json);
-        for ($id = 0; $id < $count; $id++) {
-            $article = $json[$id];
-            $article_slug = $article['slug'];
-            if ($article_slug == $slug) {
-                return view('edit', compact('article', 'id'));
+        //Cek apakah merupakan artikel contoh, jika ya tolak
+        if ($json[0]['slug'] != $slug) {
+
+            // Cari artikel yang memiliki slug tersebut
+            $count = count($json);
+            for ($id = 1; $id < $count; $id++) {
+                $article = $json[$id];
+                $article_slug = $article['slug'];
+                if ($article_slug == $slug) {
+                    return view('edit', compact('article', 'id'));
+                }
             }
         }
-
-        return redirect('/');
+        return redirect(url('article/' . $slug));
     }
 
     /**
@@ -150,7 +152,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request)
     {
-        // Get JSON file and article's last id 
+        // Mendapatkan file JSON dari Storage
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
 
@@ -170,24 +172,27 @@ class ArticleController extends Controller
             ]
         );
 
+        // MMembuat slug baru dari judul dan junggal tanggal
         $slug = Str::slug($request->title) . '-' . Str::slug(date('dmy H:i:s'));
 
+        //Cek apakah ada gambar yang diupload atau tidak
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imagename = $slug . '.' . strtolower($extension);
             $imagepath = 'uploads/' . $imagename;
 
-            //  Save Image to Storage use StoreAs and delete Old Image
+            //  Menyimpan gambar baru ke dalam storage dan menghapus gambar lama
             Storage::delete('public/' . $request->old_image);
             $image->storeAs('public/uploads', $imagename);
         } else {
+            // Mendapatkan ekstensi gambar lama
             $image = pathinfo($request->old_image);
             $extension = $image['extension'];
-
             $imagename = $slug . '.' . $extension;
             $imagepath = 'uploads/' . $imagename;
 
+            //Mengubah nama gambar saat ini
             Storage::move('public/' . $request->old_image, 'public/' . $imagepath);
         };
 
@@ -203,7 +208,7 @@ class ArticleController extends Controller
             'edited' => date('j F Y H:i:s'),
         );
 
-        // Save to JSON
+        // Menyimpan ke dalam JSON
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
 
@@ -218,10 +223,11 @@ class ArticleController extends Controller
      */
     public function destroy($slug)
     {
-        // Get JSON file 
+        // Mendapatkan file JSON dari Storage
         $getjson = Storage::get('public/article.json');
         $json = json_decode($getjson, true);
 
+        // Cari artikel yang memiliki slug tersebut lalu menghapus gambar serta data artikel
         $count = count($json);
         for ($id = 0; $id < $count; $id++) {
             $article = $json[$id];
@@ -233,6 +239,7 @@ class ArticleController extends Controller
             }
         }
 
+        // Menyimpan ke dalam JSON
         $savejson = json_encode($json, JSON_PRETTY_PRINT);
         Storage::put('public/article.json', $savejson);
         return redirect('/');

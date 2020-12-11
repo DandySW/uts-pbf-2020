@@ -1,7 +1,7 @@
 @extends('header-footer')
 
 @section('title')
-{{$article['title']}}
+{{ $article['title'] }}
 @endsection
 
 @section('active')
@@ -9,10 +9,11 @@
     <li><a href="/">List Article</a></li>
     <li><a href="{{route('article.create')}}"> Create Article</a></li>
     <li class="active"><a>Read Article</a></li>
+    @if($article['status'] == 1)
     <li><a href="{{route('article.edit', $article['slug'])}}">Edit Article</a></li>
+    @endif
 </ul>
 @endsection
-
 
 @section('content')
 <!-- Main -->
