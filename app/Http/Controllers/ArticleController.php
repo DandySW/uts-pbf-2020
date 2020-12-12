@@ -80,7 +80,7 @@ class ArticleController extends Controller
             'image' => $imagepath,
             'content' => $request->content,
             'created' => date('j F Y H:i'),
-            'editor' => "-",
+            'editor' => "",
             'edited' => "",
         );
 
@@ -205,7 +205,7 @@ class ArticleController extends Controller
             'content' => $request->content,
             'created' => $json[$request->id]['created'],
             'editor' => $request->editor,
-            'edited' => date('j F Y H:i:s'),
+            'edited' => date('j F Y H:i'),
         );
 
         // Menyimpan ke dalam JSON

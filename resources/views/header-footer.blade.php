@@ -26,7 +26,7 @@
 
         <!-- Header -->
         <header id="header">
-            <a href="index.html" class="logo">Enjoy the Article</a>
+            <a class="logo">Enjoy the Article</a>
         </header>
 
         <!-- Nav -->
@@ -42,6 +42,7 @@
             </ul>
         </nav>
 
+        <!-- Content -->
         @yield('content')
 
         <!-- Footer -->

@@ -43,7 +43,8 @@ Edit | {{ $article['title'] }}
                 </div>
                 <div class="col-6 col-12-xsmall">
                     Penyunting
-                    <input type="text" name="editor" id="editor" placeholder="Penyunting" value="{{ old('editor') }}" />
+                    <input type="text" name="editor" id="editor" placeholder="Penyunting"
+                        value="{{ $article['editor'] }}" />
                     @error('editor')
                     <label for=" editor">{{ $message }}</label>
                     @enderror

@@ -22,9 +22,13 @@
     <!-- Post -->
     <section class="post">
         <header class="major">
-            <span class="date">{{$article['created']}} <br>Ditulis oleh: {{$article['author']}} | Diedit oleh:
-                {{$article['editor']}}</span>
-            <h1>{{$article['title']}}</h1>
+            <span class="date">Ditulis oleh: {{$article['author']}} ({{$article['created']}})
+                @if( $article['editor'] == "")
+                <br>Diedit oleh: -
+                @else
+                <br>Diedit oleh: {{$article['editor']}} ({{$article['edited']}})
+                @endif
+                <h1>{{$article['title']}}</h1>
         </header>
         <div class="image main"><img src="{{url('storage/'.$article['image'])}}"
                 alt="{{url('storage/'.$article['image'])}}" /></div>

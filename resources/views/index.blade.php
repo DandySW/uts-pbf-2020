@@ -6,9 +6,9 @@
 <div id="intro">
     <h1>UTS PBF</h1>
     <h2>Dandy Satrio W. - 182410101001</h2>
-    <p>Mini article yang dibuat dengan PHP + Framework Laravel 5.8 untuk tugas Ujian Tengah Semester kelas Pemrograman
-        <br />Berbasis Framework 2020. Tema dari Mini article ini seputar Game dan juga Gadeget. Siapa saja bebas
-        untuk<br /> membaca, membuat, mengedit, dan menghapus artikel asalkan sesuai dengan tema Mini article ini :)</p>
+    <p>Mini blog yang dibuat dengan PHP + Framework Laravel 5.8 untuk tugas Ujian Tengah Semester kelas Pemrograman
+        <br />Berbasis Framework 2020. Tema dari Mini blog ini adalah Game. Siapa saja bebas
+        untuk membaca,<br /> membuat, mengedit, dan menghapus artikel asalkan sesuai dengan tema Mini blog ini :)</p>
     <ul class="actions">
         <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
     </ul>
@@ -33,8 +33,7 @@
     @if($json != NULL)
     <article class="post featured">
         <header class="major">
-            <span class="date">{{$json[0]['created']}}<br>Ditulis oleh: {{$json[0]['author']}} | Diedit oleh:
-                {{$json[0]['editor']}}</span>
+            <span class="date">Ditulis oleh: {{$json[0]['author']}} ({{$json[0]['created']}})<br>Diedit oleh: -</span>
             <h2><a href="{{url('article/'.$json[0]['slug'])}}">{{$json[0]['title']}}</a></h2>
             <p>{!! ReadMoreSpace($json[0]['content'], 500)!!}</p>
         </header>
@@ -51,9 +50,13 @@
         @if ($article['status']==1)
         <article class="post featured">
             <header class="major">
-                <span class="date">{{$article['created']}}<br>Ditulis oleh: {{$article['author']}} | Diedit
-                    oleh:
-                    {{$article['editor']}}</span>
+                <span class="date">Ditulis oleh: {{$article['author']}} ({{$article['created']}})
+                    @if( $article['editor'] == "")
+                    <br>Diedit oleh: -
+                    @else
+                    <br>Diedit oleh: {{$article['editor']}} ({{$article['edited']}})
+                    @endif
+                </span>
                 <h2><a href="{{route('article.show', $article['slug'])}}">{{$article['title']}}</a></h2>
                 <p>{!! ReadMoreSpace($article['content'], 500)!!}</p>
             </header>
