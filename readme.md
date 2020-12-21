@@ -1,7 +1,7 @@
 ## How to Install:
-1. Open terminal and run: git clone https://github.com/DandySW/uts-pbf-2020.git
-2. Run: composer update / Run: composer dump-autoload
-3. Clone .env.example and rename to .env 
+Open terminal and run: git clone https://github.com/DandySW/uts-pbf-2020.git
+Run: composer install
+Clone .env.example and rename to .env
 
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
