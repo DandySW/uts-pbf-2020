@@ -6,7 +6,7 @@
 
 @section('active')
 <ul class="links">
-    <li><a href="/">List Article</a></li>
+    <li><a href="{{ url('/') }}">List Article</a></li>
     <li><a href="{{route('article.create')}}"> Create Article</a></li>
     <li class="active"><a>Read Article</a></li>
     @if($article['status'] == 1)
